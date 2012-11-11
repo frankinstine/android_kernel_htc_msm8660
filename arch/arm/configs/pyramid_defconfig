@@ -2158,11 +2158,10 @@ CONFIG_USB_OTG_HOST=y
 # CONFIG_USB_MON is not set
 # CONFIG_USB_WUSB is not set
 # CONFIG_USB_WUSB_CBAF is not set
-<<<<<<< HEAD
+
 # CONFIG_FORCE_FAST_CHARGE is not set
-=======
 CONFIG_FORCE_FAST_CHARGE=y
->>>>>>> 95370bc6b074a1b88f0c50b8b68e086ac3c7b2fd
+
 
 #
 # USB Host Controller Drivers
