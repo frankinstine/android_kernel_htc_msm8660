@@ -306,12 +306,6 @@ static int mmc_read_switch(struct mmc_card *card)
 		goto out;
 	}
 
-	if (status[13] & 0x02)
-		card->sw_caps.hs_max_dtr = 50000000;
-
-	if (status[13] & UHS_SDR50_BUS_SPEED)
-		card->sw_caps.hs_max_dtr = 50000000;
-
 	if (status[13] & UHS_SDR50_BUS_SPEED)
 		card->sw_caps.hs_max_dtr = 50000000;
 
@@ -412,7 +406,6 @@ out:
 
 	return err;
 }
-EXPORT_SYMBOL(mmc_sd_switch);
 
 static int sd_select_driver_type(struct mmc_card *card, u8 *status)
 {
@@ -1138,7 +1131,7 @@ static int mmc_sd_resume(struct mmc_host *host)
 {
 	int err;
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
-	int retries, detect_retries;
+	int retries;
 	int delayTime;
 #endif
 
@@ -1160,22 +1153,6 @@ static int mmc_sd_resume(struct mmc_host *host)
 			mmc_power_up(host);
 			retries--;
 			delayTime *= 2;
-			/* check if card still exists */
-			detect_retries = 3;
-			while(detect_retries) {
-				err = _mmc_detect_card_removed(host);
-				if (err) {
-					detect_retries--;
-					udelay(5);
-					continue;
-				}
-				break;
-			}
-			if (!detect_retries) {
-				printk(KERN_ERR "%s(%s): find no card (%d). Stop trying\n",
-				__func__, mmc_hostname(host), err);
-				break;
-			}
 			continue;
 		}
 		break;
